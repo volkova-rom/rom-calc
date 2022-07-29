@@ -1,10 +1,11 @@
 <html>
     <head>
         <script src="rom_common-formulae.js"></script>
-        <script src="rom_tier-updates_range.js"></script>
+        <script src="rom_tier-updates_base-range.js"></script>
+        <script src="rom_tier-updates_tyrant_carnage-capoeira.js"></script>
     </head>
     <body>
-        <h2>Somewhat accurate general ranged physical skill damage calculator for PVP</h2>
+        <h2>Somewhat accurate Carnage Capoeira damage calculator for PVP</h2>
 
         <p>&nbsp;</p>
 
@@ -187,7 +188,7 @@
                     <input id="i_defender-vit" type="number" min="1" max="999" value="240"></input>
                 </td>
                 <td>
-                    <input id="i_defender-raw-def" type="number" min="1" max="99999" value="2000"></input>
+                    <input id="i_defender-raw-def" type="number" min="1" max="99999" value="3000"></input>
                 </td>
                 <td>
                     <input id="i_defender-def-per" type="number" step="0.1" min="0" max="999" value="30.00"></input>%
@@ -231,13 +232,11 @@
             <tr align="center">
                 <td rowspan="2">Refine ATK</td>
                 <td rowspan="2">Enemy Refine Reduct</td>
-                <td colspan="2">Ranged Damage</td>
-                <td rowspan="2">Skill's Dmg% <br /> Example is 1500% for Desperado</td>
-                <td rowspan="2">Enemy VIT</td>
+                <td colspan="2">Range Damage</td>
             </tr>
             <tr align="center">
                 <td>PDI</td>
-                <td>Ranged Damage Reduct</td>
+                <td>Range Damage Reduct</td>
             </tr>
             <tr>
                 <td>
@@ -255,22 +254,75 @@
                 <td>
                     <input id="i_range-reduct" type="number" step="0.1" min="0" max="999" value="0.00"></input>%
                 </td>
-                <td>
-                    <input id="i_skill-mod-per" type="number" min="1" max="9999" value="1500"></input>%
-                </td>
-                <td align="center">
-                    <span class="dup_defender-vit">240</span>
-                </td>
             </tr>
             <tr align="center">
                 <td><span class="dup_refine-atk">&nbsp;</td>
                 <td><span id="comp_refine-reduct">&nbsp;</td>
                 <td colspan="2"><span id="comp_range-mod">&nbsp;</span></td>
-                <td><span id="comp_skill-mod-per">&nbsp;</span></td>
-                <td><span class="dup_defender-vit">&nbsp;</span></td>
             </tr>
             <tr align="center">
-                <td colspan="5"><span id="display_tier3" style="font-weight: bold;"></span></td>
+                <td rowspan="2">AGI</td>
+                <td rowspan="2">Desperado Lvl</td>
+                <td rowspan="2">Capoeira Lvl</td>
+                <td colspan="2">Desperado S Rune</td>
+            </tr>
+            <tr>
+                <td>1st line</td>
+                <td>2nd line</td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="i_attacker-agi" type="number" min="1" max="999" value="180"></input>
+                </td>
+                <td>
+                    <input id="i_desperado-lvl" type="number" min="1" max="20" value="20"></input>
+                </td>
+                <td>
+                    <input id="i_capoeira-lvl" type="number" min="1" max="10" value="10"></input>
+                </td>
+                <td>
+                    <input id="i_s-rune_first-line" type="number" step="0.1" min="0" max="20.00" value="0"></input>%
+                </td>
+                <td>
+                    <input id="i_s-rune_second-line" type="number" step="0.1" min="0" max="0.1" value="0"></input>%
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="5"><span id="comp_capo-skill-mod">&nbsp;</span></td>
+            </tr>
+            <tr align="center">
+                <td>Enemy VIT</td>
+                <td>Desperado Aesir Runes</td>
+                <td>Pistol</td>
+            </tr>
+            <tr>
+                <td align="center" rowspan="2">
+                    <span class="dup_defender-vit">240</span>
+                </td>
+                <td>
+                    <select id="i_aesir-mod">
+                        <option selected value="0.30">6</option>
+                        <option value="0.25">5</option>
+                        <option value="0.20">4</option>
+                        <option value="0.15">3</option>
+                        <option value="0.10">2</option>
+                        <option value="0.05">1</option>
+                        <option value="0.00">N/A</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="i_pistol">
+                        <option selected value="0.02">Golden Law Enforcer</option>
+                        <option value="0.00">Inferno Revolver</option>
+                    </select>
+                </td>
+            </tr>
+            <tr align="center">
+                <td><span id="comp_aesir-mod">&nbsp;</span></td>
+                <td><span id="comp_pistol-mod">&nbsp;</span></td>
+            </tr>
+            <tr align="center">
+                <td colspan="4"><span id="display_tier3" style="font-weight: bold;"></span></td>
                 <td><input type="button" onClick="update_all()" value="Update"></input></td>
             </tr>
         </table>

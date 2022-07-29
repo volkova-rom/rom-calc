@@ -40,7 +40,7 @@ function coalesce_array(array_of_floats) {
     return total_float
 }
 
-function update_tier1() {
+function base_update_tier1() {
     patk = parseFloat(giv("i_patk"))
     weap_penalty = parseFloat(giv("i_weap-penalty"))
     size_mod = calc_modifier(giv("i_size-inc"), giv("i_size-dec"))
@@ -77,7 +77,7 @@ function update_tier1() {
     gi("display_tier1").textContent = "patk=" + patk.toString() + " x tier1_total_modifiers=" + tier1_mod.toString() + " = " + tier1.toString()
 }
 
-function update_tier2() {
+function base_update_tier2() {
     update_tier1()
 
     tier1 = parseFloat(gi("comp_tier1").textContent)
@@ -146,7 +146,7 @@ function base_refine_reduct() {
     return three_decimals(1.00 - (total_refine * 0.009))
 }
 
-function update_tier3() {
+function base_update_tier3() {
     update_tier2()
     tier2 = parseFloat(gi("comp_tier2").textContent)
 
@@ -315,7 +315,7 @@ function calc_status_dmg() {
     return status_dict("none", 0.00)
 }
 
-function update_tier4() {
+function base_update_tier4() {
     update_tier3()
     tier3 = parseFloat(gi("comp_tier3").textContent)
 
