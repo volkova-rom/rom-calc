@@ -40,6 +40,8 @@ function load_attacker_data() {
     elem_set_value(attacker_data["charging_time"], "i_charging-time")
 
     update_all()
+
+    gi("attacker_data_box").value = ""
 }
 
 function save_generic_range_defender_data() {
@@ -71,4 +73,6 @@ function load_defender_data() {
     load_base_defender_data(defender_data)
 
     update_all()
+
+    gi("defender_data_box").value = ""
 }
