@@ -208,7 +208,7 @@ function load_base_defender_data(defender_data) {
     elem_set_value(dd["elem_def"], "i_elem-def")
     elem_set_checked(dd["has_divine_carver"], "i_has-divine-carver")
     elem_set_value(dd["race_dec"], "i_race-dec")
-    elem_set_value(dd["pv_dec"], "i_pv-dec")
+    elem_set_value(dd["pvp_dec"], "i_pvp-dec")
     elem_set_value(dd["defender_vit"], "i_defender-vit")
     elem_set_value(dd["defender_def_per"], "i_defender-def-per")
     elem_set_value(dd["defender_raw_def"], "i_defender-raw-def")
@@ -220,7 +220,7 @@ function load_base_defender_data(defender_data) {
     elem_set_checked(dd["has_epiclesis"], "i_has-epiclesis")
     elem_set_checked(dd["has_near_death_awaken"], "i_has-near-death-awaken")
 
-    elem_set_value(dd["dam_reduc"], "i_dam-reduct")
+    elem_set_value(dd["dam_reduc"], "i_dam-reduc")
     elem_set_value(dd["defender_offhand_refine"], "i_defender_offhand-refine")
     elem_set_value(dd["defender_armor_refine"], "i_defender_armor-refine")
     elem_set_value(dd["defender_garment_refine"], "i_defender_garment-refine")
