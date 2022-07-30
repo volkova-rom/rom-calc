@@ -2,6 +2,8 @@
     <head>
         <script src="https://volkova-rom.github.io/rom-calc/scripts/common-formula.js"></script>
         <script src="https://volkova-rom.github.io/rom-calc/scripts/tyrant/absolute-penetration.js"></script>
+        <script src="https://volkova-rom.github.io/rom-calc/scripts/load-save_base.js"></script>
+         <script src="https://volkova-rom.github.io/rom-calc/scripts/tyrant/load-save/absolute-penetration.js"></script>
     </head>
     <body>
         <h2>Somewhat accurate Absolute Penetration damage calculator for PVP</h2>
@@ -564,6 +566,45 @@
             <tr>
                 <td>True Damage</td>
                 <td><span id="ratio_true-dmg"></span></td>
+            </tr>
+        </table>
+
+        <p>&nbsp;</p>
+
+        <table>
+            <tr>
+                <td colspan="6">Attacker Data</td>
+                <td colspan="6">Defender Data</td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <textarea id="attacker_data_box" rows="32" cols="64">
+                        &nbsp;
+                    </textarea>
+                </td>
+                <td colspan="6">
+                    <textarea id="defender_data_box" rows="32" cols="64">
+                        &nbsp;
+                    </textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="button" onClick="capture_attacker_data()" value="Save Attacker Data"></input>
+                </td>
+                <td> &nbsp; </td>
+                <td colspan="2">
+                    <input type="button" onClick="load_attacker_data()" value="Load Attacker Data"></input>
+                </td>
+                <td> &nbsp; </td>
+                <td colspan="2">
+                    <input type="button" onClick="capture_defender_data()" value="Save Defender Data"></input>
+                </td>
+                <td> &nbsp; </td>
+                <td colspan="2">
+                    <input type="button" onClick="load_defender_data()" value="Load Defender Data"></input>
+                </td>
+                <td> &nbsp; </td>
             </tr>
         </table>
     </body>
