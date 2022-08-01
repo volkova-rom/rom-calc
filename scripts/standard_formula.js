@@ -494,6 +494,22 @@ function calc_standard_range_tier3(previous_base_value_string, attacker_data, de
     }
 }
 
+function count_statuses_afflicted(defender_data) {
+    var statuses_afflicted_count = 0;
+
+    for(var key in defender_data) {
+        if(!key.startsWith("under_")) {
+            continue;
+        }
+        var value = defender_data[key];
+        if(value === true) {
+            statuses_afflicted_count = statuses_afflicted_count + 1;
+        }
+    }
+
+    return statuses_afflicted_count;
+}
+
 function calc_final_damage(attacker_data, defender_data) {
     var final_dmg_array = [];
 
@@ -526,7 +542,7 @@ function calc_final_damage(attacker_data, defender_data) {
         final_dmg_array.push(standard_float(master_tackler_lvl * 0.07));
     }
 
-    var status_afflicted_count = standard_float(defender_data["status_afflicted_count"]);
+    var status_afflicted_count = standard_float(count_statuses_afflicted(defender_data));
     final_dmg_array.push(on_true_return(attacker_data["has_ore_spirit"], status_afflicted_count * 0.05));
     final_dmg_array.push(on_true_return(attacker_data["has_chaotic_blade"], status_afflicted_count * 0.08));
 
@@ -702,8 +718,6 @@ function calc_standard_skill_tier4(previous_base_value_string, attacker_data, de
     var guild_prayer_true_dmg = standard_float(guild_prayer_true_skill * 150.00);
 
     var true_dmg = standard_float(monocular_true_dmg + guild_prayer_true_dmg);
-    var refine_reduction = calc_defender_refine_reduction(defender_data);
-    true_dmg = standard_float(true_dmg * refine_reduction);
 
     var skill_dmg_modifier = calc_generic_modifier(attacker_data["skill_dmg_incr"], defender_data["skill_dmg_redu"]);
 
