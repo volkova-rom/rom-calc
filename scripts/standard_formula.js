@@ -2,61 +2,82 @@ function on_true_return(bool_value, return_value) {
     return bool_value ? return_value : 0.00;
 }
 
+
+function to_element_word(val) {
+    var val_string = `${val}`;
+    val_string = val_string.trim();
+
+    var element_dict = {
+        "0": "neutral",
+        "1": "earth",
+        "2": "fire",
+        "3": "water",
+        "4": "wind",
+        "5": "holy",
+        "6": "dark",
+        "7": "ghost",
+        "8": "poison",
+        "9": "undead"
+    }
+
+    return element_dict[val_string] ?? "neutral";
+}
+
 function get_element_table() {
     var element_table = {};
-    element_table['fire'] = {};
-    element_table['fire']['fire'] = 0.25;
-    element_table['fire']['water'] = 0.50;
-    element_table['fire']['earth'] = 2.00;
-    element_table['fire']['holy'] = 0.75;
-    element_table['fire']['undead'] = 2.00;
-    element_table['fire']['poison'] = 0.75;
-    element_table['water'] = {};
-    element_table['water']['fire'] = 2.00;
-    element_table['water']['water'] = 0.25;
-    element_table['water']['wind'] = 0.50;
-    element_table['water']['holy'] = 0.75;
-    element_table['water']['undead'] = 1.50;
-    element_table['water']['poison'] = 0.75;
-    element_table['earth'] = {};
-    element_table['earth']['fire'] = 0.50;
-    element_table['earth']['earth'] = 0.25;
-    element_table['earth']['wind'] = 2.00;
-    element_table['earth']['holy'] = 0.75;
-    element_table['earth']['poison'] = 0.75;
-    element_table['wind'] = {};
-    element_table['wind']['water'] = 2.00;
-    element_table['wind']['earth'] = 0.50;
-    element_table['wind']['wind'] = 0.25;
-    element_table['wind']['holy'] = 0.75;
-    element_table['wind']['poison'] = 0.75;
-    element_table['neutral'] = {};
-    element_table['neutral']['ghost'] = 0.25;
-    element_table['ghost'] = {};
-    element_table['ghost']['neutral'] = 0.25;
-    element_table['ghost']['ghost'] = 2.00;
-    element_table['ghost']['dark'] = 0.75;
-    element_table['ghost']['holy'] = 0.75;
-    element_table['ghost']['undead'] = 1.75;
-    element_table['dark'] = {};
-    element_table['dark']['dark'] = 0.25;
-    element_table['dark']['holy'] = 2.00;
-    element_table['dark']['undead'] = 0.25;
-    element_table['dark']['poison'] = 0.25;
-    element_table['holy'] = {};
-    element_table['holy']['dark'] = 2.00;
-    element_table['holy']['holy'] = 0.25;
-    element_table['holy']['undead'] = 2.00;
-    element_table['holy']['poison'] = 1.25;
-    element_table['poison'] = {};
-    element_table['poison']['fire'] = 1.25;
-    element_table['poison']['earth'] = 1.25;
-    element_table['poison']['wind'] = 1.25;
-    element_table['poison']['ghost'] = 0.50;
-    element_table['poison']['dark'] = 0.25;
-    element_table['poison']['holy'] = 0.50;
-    element_table['poison']['undead'] = 0.25;
-    element_table['poison']['poison'] = 0.25;
+    element_table["fire"] = {};
+    element_table["fire"]["fire"] = 0.25;
+    element_table["fire"]["water"] = 0.50;
+    element_table["fire"]["earth"] = 2.00;
+    element_table["fire"]["holy"] = 0.75;
+    element_table["fire"]["undead"] = 2.00;
+    element_table["fire"]["poison"] = 0.75;
+    element_table["water"] = {};
+    element_table["water"]["fire"] = 2.00;
+    element_table["water"]["water"] = 0.25;
+    element_table["water"]["wind"] = 0.50;
+    element_table["water"]["holy"] = 0.75;
+    element_table["water"]["undead"] = 1.50;
+    element_table["water"]["poison"] = 0.75;
+    element_table["earth"] = {};
+    element_table["earth"]["fire"] = 0.50;
+    element_table["earth"]["earth"] = 0.25;
+    element_table["earth"]["wind"] = 2.00;
+    element_table["earth"]["holy"] = 0.75;
+    element_table["earth"]["poison"] = 0.75;
+    element_table["wind"] = {};
+    element_table["wind"]["water"] = 2.00;
+    element_table["wind"]["earth"] = 0.50;
+    element_table["wind"]["wind"] = 0.25;
+    element_table["wind"]["holy"] = 0.75;
+    element_table["wind"]["poison"] = 0.75;
+    element_table["neutral"] = {};
+    element_table["neutral"]["ghost"] = 0.25;
+    element_table["ghost"] = {};
+    element_table["ghost"]["neutral"] = 0.25;
+    element_table["ghost"]["ghost"] = 2.00;
+    element_table["ghost"]["dark"] = 0.75;
+    element_table["ghost"]["holy"] = 0.75;
+    element_table["ghost"]["undead"] = 1.75;
+    element_table["dark"] = {};
+    element_table["dark"]["dark"] = 0.25;
+    element_table["dark"]["holy"] = 2.00;
+    element_table["dark"]["undead"] = 0.25;
+    element_table["dark"]["poison"] = 0.25;
+    element_table["holy"] = {};
+    element_table["holy"]["dark"] = 2.00;
+    element_table["holy"]["holy"] = 0.25;
+    element_table["holy"]["undead"] = 2.00;
+    element_table["holy"]["poison"] = 1.25;
+    element_table["poison"] = {};
+    element_table["poison"]["fire"] = 1.25;
+    element_table["poison"]["earth"] = 1.25;
+    element_table["poison"]["wind"] = 1.25;
+    element_table["poison"]["ghost"] = 0.50;
+    element_table["poison"]["dark"] = 0.25;
+    element_table["poison"]["holy"] = 0.50;
+    element_table["poison"]["undead"] = 0.25;
+    element_table["poison"]["poison"] = 0.25;
     return element_table;
 }
 
@@ -215,9 +236,11 @@ function calc_standard_physical_tier1(attacker_data, defender_data) {
 
     var size_modifier = calc_generic_modifier(attacker_data["size_incr"], defender_data["size_redu"]);
 
+    var attacker_element = attacker_data["forced_element"] ?? to_element_word(attacker_data["element"]);
+
     var element_table = get_element_table();
-    var source_element_table = element_table[attacker_data["element"]] ?? {};
-    var element_rate = source_element_table[defender_data["element"]] ?? 1.00;
+    var source_element_table = element_table[attacker_element] ?? {};
+    var element_rate = source_element_table[to_element_word(defender_data["element"])] ?? 1.00;
 
     if(attacker_data["has_snowy_owl"] && element_rate > 1.00) {
         element_rate = element_rate * 1.10;
