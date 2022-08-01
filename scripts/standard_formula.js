@@ -702,6 +702,8 @@ function calc_standard_skill_tier4(previous_base_value_string, attacker_data, de
     var guild_prayer_true_dmg = standard_float(guild_prayer_true_skill * 150.00);
 
     var true_dmg = standard_float(monocular_true_dmg + guild_prayer_true_dmg);
+    var refine_reduction = calc_defender_refine_reduction(defender_data);
+    true_dmg = standard_float(true_dmg * refine_reduction);
 
     var skill_dmg_modifier = calc_generic_modifier(attacker_data["skill_dmg_incr"], defender_data["skill_dmg_redu"]);
 
