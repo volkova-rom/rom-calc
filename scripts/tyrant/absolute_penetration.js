@@ -72,8 +72,16 @@ function calc_absolute_penetration_tier3(previous_base_value_string, attacker_da
     var luk_passive_lvl = standard_float(attacker_data["luk_passive_lvl"]);
     var luk_bonus = standard_float(luk_passive_lvl * 3.00 * stat_luk);
 
+    var defender_def_per = standard_float(defender_data["def_per"]);
+    if(defender_data["under_poison"]) {
+        defender_def_per = standard_float(defender_def_per - 25.00);
+    }
+    if(defender_data["under_petrify"]) {
+        defender_def_per = standard_float(defender_def_per - 50.00);
+    }
+
     var defense_modifier = calc_pvp_def_modifier(attacker_data["patk"], attacker_data["ignore_def"], 
-        defender_data["def_per"], defender_data["def_raw"], defender_data["stat_vit"]);
+        defender_def_per, defender_data["def_raw"], defender_data["stat_vit"]);
 
     var redu_from_skills_array = collate_redu_from_skills(defender_data);
 

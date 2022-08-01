@@ -253,7 +253,17 @@ function calc_standard_physical_tier1(attacker_data, defender_data) {
     }
 
     var element_increase = 1.00 + as_modifier(attacker_data["elem_incr"]);
-    var element_modifier = calc_pvp_element_modifier(attacker_data["elem_atk"], defender_data["elem_def"]);
+
+    var element_atk = standard_float(attacker_data["elem_atk"]);
+    var element_def = standard_float(defender_data["elem_def"]);
+
+    var burn_stacks = standard_float("burn_stacks" in defender_data ? defender_data["burn_stacks"] : 0.00);
+    if(attacker_element == "fire" && defender_data["under_burn"]) {
+        var burn_reduction = standard_float(burn_stacks * 25);
+        element_def = standard_float(element_def - burn_reduction);
+    }
+
+    var element_modifier = calc_pvp_element_modifier(element_atk, element_def);
     var total_modifiers = weapon_penalty * size_modifier * element_rate * element_increase * element_modifier;
     total_modifiers = standard_float(total_modifiers);
     var total_value = standard_float(patk * total_modifiers);
@@ -280,8 +290,17 @@ function calc_standard_melee_tier2(previous_base_value_string, attacker_data, de
 
     var race_modifier = calc_pvp_race_modifier(attacker_data["race_incr"], defender_data["race_redu"]);
     var pvp_modifier = calc_generic_modifier(attacker_data["pvp_incr"], defender_data["pvp_redu"]);
+
+    var defender_def_per = standard_float(defender_data["def_per"]);
+    if(defender_data["under_poison"]) {
+        defender_def_per = standard_float(defender_def_per - 25.00);
+    }
+    if(defender_data["under_petrify"]) {
+        defender_def_per = standard_float(defender_def_per - 50.00);
+    }
+
     var defense_modifier = calc_pvp_def_modifier(attacker_data["patk"], attacker_data["ignore_def"], 
-        defender_data["def_per"], defender_data["def_raw"], defender_data["stat_vit"]);
+        defender_def_per, defender_data["def_raw"], defender_data["stat_vit"]);
 
     var redu_from_skills_array = [];
     if(defender_data["has_energy_coat"]) {
@@ -365,8 +384,18 @@ function calc_standard_range_tier2(previous_base_value_string, attacker_data, de
 
     var race_modifier = calc_pvp_race_modifier(attacker_data["race_incr"], defender_data["race_redu"]);
     var pvp_modifier = calc_generic_modifier(attacker_data["pvp_incr"], defender_data["pvp_redu"]);
+
+    var defender_def_per = standard_float(defender_data["def_per"]);
+    if(defender_data["under_poison"]) {
+        defender_def_per = standard_float(defender_def_per - 25.00);
+    }
+    if(defender_data["under_petrify"]) {
+        defender_def_per = standard_float(defender_def_per - 50.00);
+    }
+    console.log(defender_def_per);
+
     var defense_modifier = calc_pvp_def_modifier(attacker_data["patk"], attacker_data["ignore_def"], 
-        defender_data["def_per"], defender_data["def_raw"], defender_data["stat_vit"]);
+        defender_def_per, defender_data["def_raw"], defender_data["stat_vit"]);
 
     var redu_from_skills_array = collate_redu_from_skills(defender_data);
 
