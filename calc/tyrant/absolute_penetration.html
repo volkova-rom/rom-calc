@@ -1,0 +1,612 @@
+<html>
+    <head>
+        <script src="https://volkova-rom.github.io/rom-calc/scripts/data_manipulation.js"></script>
+        <script src="https://volkova-rom.github.io/rom-calc/scripts/standard_formula.js"></script>
+        <script src="https://volkova-rom.github.io/rom-calc/scripts/tyrant/absolute_penetration.js"></script>
+    </head>
+    <body>
+        <h2>Somewhat accurate Absolute Penetration damage calculator for PVP</h2>
+
+        <p>&nbsp;</p>
+
+        <label id="computed.tier1" class="computed" hidden>0</label>
+        <label id="compputed.tier2" class="computed" hidden>0</label>
+        <label id="compputed.tier3" class="computed" hidden>0</label>
+        <label id="computed.tier4" class="computed" hidden>0</label>
+        <label id="computed.tier5" class="computed" hidden>0</label>
+        <label id="computed.tier6" class="computed" hidden>0</label>
+        <span id="computed.status_dmg_mod" class="computed" hidden>1</span>
+
+        <table id="tier1-table" border="1">
+            <tr>
+                <td colspan="6">Tier 1</td>
+            </tr>
+            <tr align="center">
+                <td rowspan="2">PATK</td>
+                <td rowspan="2">Weapon Size Penalty</td>
+                <td colspan="2">Medium Size Modifier</td>
+            </tr>
+            <tr align="center">
+                <td>Increase to Medium</td>
+                <td>Reduction from Medium</td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="attacker.patk" class="attacker" type="number" min="1" max="999999" value="12500"></input>
+                </td>
+                <td>
+                    <select id="attacker.weapon_penalty" class="attacker">
+                        <option selected value="1">100%</option>
+                        <option value="0.75">75%</option>
+                        <option value="0.50">50%</option>
+                        <option value="0.25">25%</option>
+                    </select>
+                </td>
+                <td>
+                    <input id="attacker.size_incr" class="attacker" type="number" step="0.1" min="0" max="250" value="0.00"></input>%
+                </td>
+                <td>
+                    <input id="defender.size_redu" class="defender" type="number" step="0.1" min="0" max="250" value="0.00"></input>%
+                </td>
+            </tr>
+            <tr align="center">
+                <td><span class="duplicate" title="attacker.patk">&nbsp;</span></td>
+                <td><span id="computed.weapon_penalty" class="computed"></span>&nbsp;</span></td>
+                <td colspan="2"><span id="computed.size_modifier" class="computed">&nbsp;</span></td>
+            </tr>
+            <tr>
+                <td colspan="3">Elemental Nature</td>
+                <td rowspan="2">Damage Increase to Element</td>
+                <td colspan="2">Elemental Modifier</td>
+            </tr>
+            <tr>
+                <td>Attacking Element</td>
+                <td>Defending Element</td>
+                <td>Additional Elemental Rate</td>
+                <td>Elemental ATK</td>
+                <td>Elemental DEF</td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="attacker.element" class="attacker">
+                        <option selected value="neutral">Neutral</option>
+                        <option value="earth">Earth</option>
+                        <option value="fire">Fire</option>
+                        <option value="water">Water</option>
+                        <option value="wind">Wind</option>
+                        <option value="holy">Holy</option>
+                        <option value="dark">Shadow</option>
+                        <option value="ghost">Ghost</option>
+                        <option value="poison">Poison</option>
+                    </select>
+                </td>
+                <td>
+                    <select id="defender.element" class="defender">
+                        <option selected value="neutral">Neutral</option>
+                        <option value="earth">Earth</option>
+                        <option value="fire">Fire</option>
+                        <option value="water">Water</option>
+                        <option value="wind">Wind</option>
+                        <option value="holy">Holy</option>
+                        <option value="dark">Shadow</option>
+                        <option value="ghost">Ghost</option>
+                        <option value="poison">Poison</option>
+                        <option value="undead">Undead</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="checkbox" id="attacker.has_lov" class="attacker"></input> <label">Attacker has LOV?</label> <br />
+                    <input type="checkbox" id="attacker.has_snowy_owl" class="attacker"></input> <label>Attacker has Snowy Owl?</label> <br />
+                    <input type="checkbox" id="defender.has_divine_carver" class="defender"></input> <label>Defender has Divine Carver?</label>
+                </td>
+                <td>
+                    <input id="attacker.elem_incr" class="attacker" type="number" step="0.1" min="0" max="250" value="0.00"></input>%
+                </td>
+                <td>
+                    <input id="attacker.elem_atk" class="attacker" type="number" step="0.1" min="0" max="250" value="0.00"></input>%
+                </td>
+                <td>
+                    <input id="defender.elem_def" class="defender" type="number" step="0.1" min="0" max="250" value="0.00"></input>%
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="3"><span id="computed.element_rate" class="computed">&nbsp;</span></td>
+                <td><span id="computed.element_increase" class="computed">&nbsp;</span></td>
+                <td colspan="2"><span id="computed.element_modifier" class="computed">&nbsp;</span></td>
+            </tr>
+            <tr align="center">
+                <td colspan="5"><span id="display.tier1" class="display" style="font-weight: bold;">&nbsp;</span></td>
+                <td><input type="button" onClick="update_all()" value="Update"></input></td>
+            </tr>
+        </table>
+
+        <p> &nbsp;</p>
+
+        <table id="tier2-table" border="1">
+            <tr>
+                <td colspan="9">Tier 2</td>
+            </tr>
+            <tr align="center">
+                <td colspan="3">Attacker stats</td>
+                <td rowspan="2">MATK</td>
+                <td colspan="2">Demihuman Damage</td>
+                <td colspan="2">PVP Damage</td>
+            </tr>
+            <tr align="center">
+                <td>DEX</td>
+                <td>STR</td>
+                <td>LUK</td>
+                <td>Increase to Demihuman</td>
+                <td>Reduction from Demihuman</td>
+                <td>Increase to Players</td>
+                <td>Reduction from Players</td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="attacker.stat_dex" class="attacker" type="number" min="1" max="999" value="240"></input>
+                </td>
+                <td>
+                    <input id="attacker.stat_str" class="attacker" type="number" min="1" max="999" value="159"></input>
+                </td>
+                <td>
+                    <input id="attacker.stat_luk" class="attacker" type="number" min="1" max="999" value="159"></input>
+                </td>
+                <td>
+                    <input id="attacker.matk" class="attacker" type="number" min="1" max="999999" value="3000"></input>
+                </td>
+                <td>
+                    <input id="attacker.race_incr" class="attacker" type="number" step="0.1" min="0" max="250" value="0.00"></input>%
+                </td>
+                <td>
+                    <input id="defender.race_redu" class="defender" type="number" step="0.1" min="0" max="250" value="0.00"></input>%
+                </td>
+                <td>
+                    <input id="attacker.pvp_incr" class="attacker" type="number" step="0.1" min="0" max="250" value="0.00"></input>%
+                </td>
+                <td>
+                    <input id="defender.pvp_redu" class="defender" type="number" step="0.1" min="0" max="250" value="0.00"></input>%
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="3"><span id="computed.stat_atk" class="computed">&nbsp;</span></td>
+                <td><span id="computed.usable_matk" class="computed">&nbsp;</span></td>
+                <td colspan="2"><span id="computed.race_modifier" class="computed">&nbsp;</span></td>
+                <td colspan="2"><span id="computed.pvp_modifier" class="computed">&nbsp;</span></td>
+            </tr>
+            <tr align="center">
+                <td colspan="7"><span id="display.tier2" class="display" style="font-weight: bold;"></span></td>
+                <td><input type="button" onClick="update_all()" value="Update"></input></td>
+            </tr>
+        </table>
+
+        <p>&nbsp;</p>
+
+        <table id="tier3-table" border="1">
+            <tr>
+                <td colspan="9">Tier 3</td>
+            </tr>
+            <tr align="center">
+                <td rowspan="2">LUK Passive</td>
+                <td colspan="4">Defense Modifier</td>
+                <td colspan="4">Physical Modifier</td>
+            </tr>
+            <tr align="center">
+                <td>Ignore DEF</td>
+                <td>Defender VIT</td>
+                <td>Defender raw DEF</td>
+                <td>Defender DEF%</td>
+                <td>Refine Levels</td>
+                <td>Penetration</td>
+                <td>Damage Reduction</td>
+                <td>Defender Skill Buffs</td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="attacker.luk_passive_lvl" class="attacker" type="number" min="0" max="5" value="5"></input>
+                </td>
+                <td>
+                    <input id="attacker.ignore_def" class="attacker" type="number" step="0.1" min="0" max="999" value="100.00"></input>%
+                </td>
+                <td>
+                    <input id="defender.stat_vit" class="defender" type="number" min="1" max="999" value="240"></input>
+                </td>
+                <td>
+                    <input id="defender.def_raw" class="defender" type="number" min="1" max="99999" value="2000"></input>
+                </td>
+                <td>
+                    <input id="defender.def_per" class="defender" type="number" step="0.1" min="0" max="999" value="30.00"></input>%
+                </td>
+                <td>
+                    Weapon Refine Lvl: <input id="attacker.refine_weapon" class="attacker" type="number" min="0" max="16" value="15"></input> <br />
+                    Acce1 Refine Lvl: <input id="attacker.refine_acce1" class="attacker" type="number" min="0" max="16" value="15"></input> <br />
+                    Acce2 Refine Lvl: <input id="attacker.refine_acce2" class="attacker" type="number" min="0" max="16" value="15"></input>
+                </td>
+                <td>
+                    <input id="attacker.phys_pen" class="attacker" type="number" step="0.1" min="0" max="250" value="0.00"></input>%
+                </td>
+                <td>
+                    <input id="defender.dam_redu" class="defender" type="number" step="0.1" min="0" max="250" value="0.00"></input>%
+                </td>
+                <td>
+                    <input type="checkbox" id="defender.has_energy_coat" class="defender"></input> <label>Has Energy Coat? (of Wiz/Sage)</label> <br />
+                    <input type="checkbox" id="defender.has_heart_of_steel" class="defender"></input> <label>Has Heart of Steel? (of Knight)</label> <br />
+                    <input type="checkbox" id="defender.has_selfless_shield" class="defender"></input> <label>Has Selfless Shield? (from Crusader)</label> <br />
+                    <input type="checkbox" id="defender.has_vanished" class="defender"></input> <label>Has Vanished? (of Stalker)</label> <br />
+                    <input type="checkbox" id="defender.has_epiclesis"class="defender"></input> <label>Has Epiclesis? (from Priest)</label> <br />
+                    <input type="checkbox" id="defender.has_near_death_awaken" class="defender"></input> <label>Has Near Death Awaken? (of Shura)</label> <br />
+                </td>
+                <tr align="center">
+                    <td><span id="computed.luk_bonus" class="computed">&nbsp;</span></td>
+                    <td colspan="4"><span id="computed.defense_modifier" class="computed">&nbsp;</span></td>
+                    <td colspan="4"><span id="computed.physical_modifier" class="computed">&nbsp;</span></td>
+                </tr>
+                <tr align="center">
+                    <td colspan="8"><span id="display.tier3" class="display" style="font-weight: bold;"></span></td>
+                    <td><input type="button" onClick="update_all()" value="Update"></input></td>
+                </tr>
+            </tr>
+        </table>
+
+        <p> &nbsp;</p>
+
+        <table id="tier4-table" border="1">
+            <tr>
+                <td colspan="6">Tier 4</td>
+            </tr>
+            <tr align="center">
+                <td rowspan="2">Refine ATK</td>
+                <td rowspan="2">Defender Refine Reduction</td>
+                <td colspan="2">Range Damage</td>
+            </tr>
+            <tr align="center">
+                <td>Physical Damage Increase / PDI</td>
+                <td>Range Damage Reduction</td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="attacker.refine_atk" class="attacker" type="number" min="1" max="9999" value="1200"></input>
+                </td>
+                <td>
+                    Enemy Offhand Refine: <input id="defender.refine_offhand" class="defender" type="number" min="0" max="16" value="15"></input> <br />
+                    Enemy Armor Refine: <input id="defender.refine_armor" class="defender" type="number" min="0" max="16" value="15"></input> <br />
+                    Enemy Garment Refine: <input id="defender.refine_garment" class="defender" type="number" min="0" max="16" value="15"></input> <br />
+                    Enemy Shoes Refine: <input id="defender.refine_shoes" class="defender" type="number" min="0" max="16" value="15"></input> <br />
+                </td>
+                <td>
+                    <input id="attacker.pdi" class="attacker" type="number" step="0.1" min="0" max="999" value="0.00"></input>%
+                </td>
+                <td>
+                    <input id="defender.range_redu" class="defender" type="number" step="0.1" min="0" max="999" value="0.00"></input>%
+                </td>
+            </tr>
+            <tr align="center">
+                <td><span class="duplicate" title="attacker.refine_atk">&nbsp;</td>
+                <td><span id="computed.refine_reduction" class="computed">&nbsp;</td>
+                <td colspan="2"><span id="computed.range_modifier" class="computed">&nbsp;</span></td>
+            </tr>
+            <tr align="center">
+                <td colspan="7">Absolute Penetration Modifiers</td>
+            </tr>
+            <tr align="center">
+                <td>Crackshot Lvl</td>
+                <td>Absolute Penetration Lvl</td>
+                <td>Assault Terminator</td>
+                <td>Crackshot Aesir Runes</td>
+                <td>Boost from Enemy Defense</td>
+                <td>Distance in metres</td>
+                <td>Charging time in seconds</td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="attacker.crackshot_lvl" class="attacker" type="number" min="1" max="20" value="20"></input>
+                </td>
+                <td>
+                    <input id="attacker.absolute_penetration_lvl" class="attacker" type="number" min="1" max="10" value="10"></input>
+                </td>
+                <td><span id="computed.assault_terminator_modifier" class="computed">&nbsp;</spanid></td>
+                <td>
+                    <select id="attacker.aesir_nodes" class="attacker">
+                        <option selected value="0.35">7</option>
+                        <option value="0.30">6</option>
+                        <option value="0.25">5</option>
+                        <option value="0.20">4</option>
+                        <option value="0.15">3</option>
+                        <option value="0.10">2</option>
+                        <option value="0.05">1</option>
+                        <option value="0.00">N/A</option>
+                    </select>
+                </td>
+                <td rowspan="2"><span id="computed.defense_bonus" class="computed">&nbsp;</spanid></td>
+                <td>
+                    <input id="attacker.distance_metres" class="attacker" type="number" min="1" max="20" value="10"></input>
+                </td>
+                <td>
+                    <input id="attacker.charging_time" class="attacker" type="number" min="1" max="5" value="0"></input>
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="4"><span id="computed.absolute_penetration_modifier_part1" class="computed">&nbsp;</span></td>
+                <td colspan="2"><span id="computed.absolute_penetration_modifier_part2" class="computed">&nbsp;</span></td>
+            </tr>
+            <tr>
+                <td>Defender VIT</td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <span class="duplicate" title="defender.stat_vit">240</span>
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="6"><span id="display.tier4" class="display" style="font-weight: bold;"></span></td>
+                <td><input type="button" onClick="update_all()" value="Update"></input></td>
+            </tr>
+        </table>
+
+        <p>&nbsp;</p>
+        <table id="tier5-table" border="1">
+            <tr>
+                <td colspan="5">Tier 5</td>
+            </tr>
+            <tr align="center">
+                <td colspan="2">True Skill Damage</td>
+                <td colspan="2">Skill Damage</td>
+                <td rowspan="2">Final Damage Increase</td>
+            </tr>
+            <tr align="center">
+                <td>Monoculars</td>
+                <td>Guild Prayer True Skill Damage</td>
+                <td>Skill Damage Increase</td>
+                <td>Skill Damage Reduction</td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Has Monoculars?</span> 
+                    <select id="attacker.refine_monocular" class="attacker">
+                        <option selected value="0">None</option>
+                        <option value="0.15">+1</option>
+                        <option value="0.2">+2</option>
+                        <option value="0.25">+3</option>
+                        <option value="0.30">+4</option>
+                        <option value="0.35">+5</option>
+                        <option value="0.40">+6 and up</option>
+                    </select>
+                    <br />
+                    PATK: <span class="duplicate" title="attacker.patk">&nbsp;</span> <br/>
+                    MATK: <span class="duplicate" title="attacker.matk">&nbsp;</span>
+                </td>
+                <td>
+                    <input id="attacker.guild_prayer_true_skill" class="attacker" type="number" min="0" max="10" value="0"></input>
+                </td>
+                <td>
+                    <input id="attacker.skill_dmg_incr" class="attacker" type="number" step="0.1" min="0" max="999" value="0.00"></input>%
+                </td>
+                <td>
+                    <input id="defender.skill_dmg_redu" class="defender" type="number" step="0.1" min="0" max="999" value="0.00"></input>%
+                </td>
+                <td>
+                    <span>Number of LOD equipped:&nbsp;</span>
+                    <select id="attacker.lod_count" class="attacker">
+                        <option selected value="0">None</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                    <br />
+                    <span>Is LOD deposited?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_lod_depo" class="attacker"></input>
+                    <br />
+                    <span>Is Chimera-star equipped?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_chimera_star" class="attacker"></input>
+                    <br />
+                    <span>Is Chimera-star deposited?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_chimera_star_depo" class="attacker"></input>
+                    <br />
+                    <span>Has Gluttonious Imp?&nbsp;</span>
+                    <input type="checkbox" id=attacker.has_glut_imp" class="attacker"></input>
+                    <br />
+                    <span>Has Cyborg Bunny?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_cyborg_bunny" class="attacker"></input>
+                    <br />
+                    <span>Has Dead Eddga?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_dead_eddga" class="attacker"></input>
+                    <br />
+                    <span>Remaining HP:&nbsp;</span>
+                    <input id="attacker.remaining_hp_per" class="attacker" type="number" step="0.1" min="0.1" max="99.99" value="100.00"></input>%
+                    <br />
+                    <span>Has Love Goddess?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_love_goddess" class="attacker"></input>
+                    <br />
+                    <span>Has Wind Perchdrake?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_wind_perch_drake" class="attacker"></input>
+                    <br />
+                    <span>Has Master Tackler?&nbsp;</span>
+                    <select id="attacker.master_tackler_lvl" class="attacker">
+                        <option selected value="0">None</option>
+                        <option value="1">Lv 1</option>
+                        <option value="2">Lv 2</option>
+                        <option value="3">Lv 3</option>
+                        <option value="4">Lv 4</option>
+                    </select>
+                    <br />
+                    <span>Chess or orb holder?&nbsp;</span>
+                    <select id="defender.chess_orb" class="defender">
+                        <option selected value="">N/A</option>
+                        <option value="chess">Chess Piece</option>
+                        <option value="orb">Orb Holder</option>
+                    </select>
+                    <br />
+                    <span>Number of statuses afflicted:&nbsp;</span>
+                    <input id="defender.status_afflicted_count" class="defender" type="number" min="0" max="12" value="0"></input>
+                    <br />
+                    <span>Has Ore Spirit?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_ore_spirit" class="attacker"></input>
+                    <br />
+                    <span>Has activated Chaotic Blade?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_chaotic_blade" class="attacker"></input>
+                    <br />
+                    <span>War Ender Artifact Buff:&nbsp;</span>
+                    <select id="attacker.war_ender_artifact" class="attacker">
+                        <option selected value="0">None</option>
+                        <option value="0.30">Tier 2</option>
+                        <option value="0.50">Tier 3</option>
+                    </select>
+                    <br />
+                    <span>Mysteltainn Artifact Buff:&nbsp;</span>
+                    <select id="attacker.mysteltainn_artifact" class="attacker">
+                        <option selected value="0">None</option>
+                        <option value="0.30">Tier 2</option>
+                        <option value="0.60">Tier 3</option>
+                    </select>
+                    <br />
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="2"><span id="computed.true_dmg" class="computed">&nbsp;</span></td>
+                <td colspan="2"><span id="computed.skill_dmg_modifier" class="computed">&nbsp;</span></td>
+                <td><span id="computed.final_dmg_modifier" class="computed">&nbsp;</span></td>
+            </tr>
+            <tr align="center">
+                <td colspan="5">Statuses</td>
+            </tr>
+            <tr align="center">
+                <td>Poison <input type="checkbox" id="defender.under_poison" class="defender"></input></td>
+                <td>Stun <input type="checkbox" id="defender.under_stun" class="defender"></input></td>
+                <td>Freeze <input type="checkbox" id="defender.under_freeze" class="defender"></input></td>
+                <td>Bleed <input type="checkbox" id="defender.under_bleed" class="defender"></input></td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Has Flower Demon Valley Lily?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_poison_tail" class="attacker"></input>
+                    <br />
+                </td>
+                <td>
+                    <span>Has Orc Hero depo combo?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_orc_hero_depo_combo" class="attacker"></input>
+                    <br />
+                    <span>Has Thunder Kabuto?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_thunder_kabuto" class="attacker"></input>
+                    <br />
+                    <span>Count of Rotar Zairo star equipped:&nbsp;</span>
+                    <select id="attacker.rotar_zairo_star_count" class="attacker">
+                        <option selected value="0">None</option>
+                        <option value="0.10">1</option>
+                        <option value="0.20">2</option>
+                    </select>
+                    <br />
+                </td>
+                <td>
+                    <span>Has Marina depo combo?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_marina_depo_combo" class="attacker"></input>
+                    <br />
+                    <span>Has Garm depo combo?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_garm_depo_combo" class="attacker"></input>
+                    <br />
+                    <span>Has Stormy Knight and Undead SK combo?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_stormy_knight_combo" class="attacker"></input>
+                    <br />
+                </td>
+                <td>
+                    <span>Has Moonlight Swing?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_moonlight_swing" class="attacker"></input>
+                    <br />
+                </td>
+            </tr>
+            <tr align="center">
+                <td>Fear <input type="checkbox" id="defender.under_fear" class="defender"></input></td>
+                <td>Curse <input type="checkbox" id="defender.under_curse" class="defender"></input></td>
+                <td>Silence <input type="checkbox" id="defender.under_silence" class="defender"></input></td>
+                <td>Darkness <input type="checkbox" id="defender.under_darkness"class="defender"></input></td>
+            </tr>
+            <tr>
+                <td align="center" colspan="4">
+                    <span>Is Cursed Hand equipped on Acce1?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_cursed_hand_acce1" class="attacker"></input>
+                    <br />
+                    <span>Is Cursed Hand equipped on Acce2?&nbsp;</span>
+                    <input type="checkbox" id="attacker.has_cursed_hand_acce2" class="attacker"></input>
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="5"><span id="display.status_dmg_modifier" class="display">&nbsp;</span></td>
+            </tr>
+            
+            <tr align="center">
+                <td colspan="4"><span id="display.tier5" class="display" style="font-weight: bold;"></span></td>
+                <td><input type="button" onClick="update_all()" value="Update"></input></td>
+            </tr>
+        </table>
+
+        <p>&nbsp;</p>
+        <table border="1" style="font-size: 2.4em;">
+            <tr>
+                <td colspan="2">
+                    Final computation
+                </td>
+                <td colspan="4">
+                    <span id="computed.final" class="computed">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </td>
+            </tr>
+            <tr>
+                <td>Damage Source</td>
+                <td>Percentage</td>
+            </tr>
+            <tr>
+                <td>PATK</td>
+                <td><span id="computed.ratio_patk" class="computed"></span></td>
+            </tr>
+            <tr>
+                <td>Stat ATK</td>
+                <td><span id="computed.ratio_stat_atk" class="computed"></span></td>
+            </tr>
+            <tr>
+                <td>MATK</td>
+                <td><span id="computed.ratio_matk" class="computed"></span></td>
+            </tr>
+            <tr>
+                <td>LUK Bonus</td>
+                <td><span id="computed.ratio_luk_bonus" class="computed"></span></td>
+            </tr>
+            <tr>
+                <td>Refine ATK</td>
+                <td><span id="computed.ratio_refine_atk" class="computed"></span></td>
+            </tr>
+            <tr>
+                <td>True Damage</td>
+                <td><span id="computed.ratio_true_dmg" class="computed"></span></td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <td colspan="6">Attacker Data</td>
+                <td colspan="6">Defender Data</td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <textarea id="attacker_data_box" cols="64" rows="32"></textarea>
+                </td>
+                <td colspan="6">
+                    <textarea id="defender_data_box" cols="64" rows="32"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="button" onClick="capture_attacker_data()" value="Save Attacker Data"></input>
+                </td>
+                <td> &nbsp; </td>
+                <td colspan="2">
+                    <input type="button" onClick="load_attacker_data()" value="Load Attacker Data"></input>
+                </td>
+                <td> &nbsp; </td>
+                <td colspan="2">
+                    <input type="button" onClick="capture_defender_data()" value="Save Defender Data"></input>
+                </td>
+                <td> &nbsp; </td>
+                <td colspan="2">
+                    <input type="button" onClick="load_defender_data()" value="Load Defender Data"></input>
+                </td>
+                <td> &nbsp; </td>
+            </tr>
+        </table>
+    </body>
+</html>
