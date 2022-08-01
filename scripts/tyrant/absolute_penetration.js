@@ -189,6 +189,8 @@ function update_all() {
     var attacker_data = retrieve_all_elements_by_class("attacker", with_prefix);
     var defender_data = retrieve_all_elements_by_class("defender", with_prefix);
 
+    attacker_data["forced_element"] = "neutral";
+
     var tier1_data = calc_standard_physical_tier1(attacker_data, defender_data);
     update_as_computed(tier1_data);
     var tier1_value = tier1_data["total_value"];
