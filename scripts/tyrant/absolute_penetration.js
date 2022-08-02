@@ -132,7 +132,7 @@ function calc_absolute_penetration_tier4(previous_base_value_string, attacker_da
     var aesir_nodes = standard_float(7.00 - Math.min(aesir_nodes_option, 7.00));
     var aesir_modifier = standard_float(1.00 + (aesir_nodes * 0.05));
 
-    var absolute_penetration_modifier_part1 = crackshot_modifier * absolute_penetration_modifier * assault_terminator_modifier * aesir_modifier;
+    var absolute_penetration_modifier_part1 = crackshot_modifier * absolute_penetration_modifier * assault_terminator_modifier * aesir_modifier * refine_reduction * range_modifier;
     absolute_penetration_modifier_part1 = standard_float(absolute_penetration_modifier_part1);
 
     var distance_metres = standard_float(attacker_data["distance_metres"]);
