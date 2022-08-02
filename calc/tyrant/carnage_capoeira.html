@@ -245,10 +245,10 @@
                     <input id="attacker.refine_atk" class="attacker" type="number" min="1" max="9999" value="1200"></input>
                 </td>
                 <td>
-                    Enemy Offhand Refine: <input id="defender.refine_offhand" class="defender" type="number" min="0" max="16" value="15"></input> <br />
-                    Enemy Armor Refine: <input id="defender.refine_armor" class="defender" type="number" min="0" max="16" value="15"></input> <br />
-                    Enemy Garment Refine: <input id="defender.refine_garment" class="defender" type="number" min="0" max="16" value="15"></input> <br />
-                    Enemy Shoes Refine: <input id="defender.refine_shoes" class="defender" type="number" min="0" max="16" value="15"></input> <br />
+                    Defender Offhand Refine: <input id="defender.refine_offhand" class="defender" type="number" min="0" max="16" value="15"></input> <br />
+                    Defender Armor Refine: <input id="defender.refine_armor" class="defender" type="number" min="0" max="16" value="15"></input> <br />
+                    Defender Garment Refine: <input id="defender.refine_garment" class="defender" type="number" min="0" max="16" value="15"></input> <br />
+                    Defender Shoes Refine: <input id="defender.refine_shoes" class="defender" type="number" min="0" max="16" value="15"></input> <br />
                 </td>
                 <td>
                     <input id="attacker.pdi" class="attacker" type="number" step="0.1" min="0" max="999" value="0.00"></input>%
@@ -295,7 +295,7 @@
                 <td colspan="2"><span id="computed.rune_modifier" class="computed">&nbsp;</span></td>
             </tr>
             <tr align="center">
-                <td>Enemy VIT</td>
+                <td>Defender VIT</td>
                 <td>Desperado Aesir Runes</td>
                 <td>Pistol</td>
             </tr>
@@ -469,7 +469,9 @@
                     <br />
                 </td>
                 <td>&nbsp;</td>
-                <td>Burn stacks: <input id="defender.burn_stacks" class="defender" type="number" min="0" max="10" value="0"></input></td>
+                <td>Burn stacks: <input id="defender.burn_stacks" class="defender" type="number" min="0" max="10" value="0"></input><br />
+                    <span>Each burn stack on a defender is -25% Fire DEF</span>
+                </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -494,11 +496,14 @@
                     <input type="checkbox" id="attacker.has_stormy_knight_combo" class="attacker"></input>
                     <br />
                 </td>
-                <td>&nbsp;</td>
+                <td>
+                    <span>Petrified defender suffers -50% DEF%</span>
+                </td>
                 <td>
                     <span>Has Flower Demon Valley Lily?&nbsp;</span>
                     <input type="checkbox" id="attacker.has_poison_tail" class="attacker"></input>
                     <br />
+                    <span>Poisoned defender suffers -25% DEF%</span>
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
