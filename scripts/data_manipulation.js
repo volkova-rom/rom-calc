@@ -134,7 +134,7 @@ function infer_element_update(element_id, element_value) {
     tag_name = tag_name.toLowerCase()
 
     if(tag_name == "select") {
-        element_value.selectedIndex = element_value;
+        element.selectedIndex = parseInt(element_value);
         return;
     }
 
@@ -145,6 +145,7 @@ function infer_element_update(element_id, element_value) {
 
     if(tag_name == "span") {
         element.textContent = element_value;
+        return;
     }
 
     element.value = element_value;
