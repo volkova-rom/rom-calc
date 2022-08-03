@@ -392,7 +392,6 @@ function calc_standard_range_tier2(previous_base_value_string, attacker_data, de
     if(defender_data["under_petrify"]) {
         defender_def_per = standard_float(defender_def_per - 50.00);
     }
-    console.log(defender_def_per);
 
     var defense_modifier = calc_pvp_def_modifier(attacker_data["patk"], attacker_data["ignore_def"], 
         defender_def_per, defender_data["def_raw"], defender_data["stat_vit"]);
