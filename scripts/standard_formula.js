@@ -630,6 +630,7 @@ function build_status_dmg_data(attacker_data, defender_data) {
     if(defender_data["under_bleed"]) {
         var status_dmg_array = [];
         status_dmg_array.push(on_true_return(attacker_data["has_moonlight_swing"], 0.05));
+        status_dmg_array.push(on_true_return(attacker_data["has_tyrant_card"], 0.10));
         var total_status_dmg = 1.00;
         for(var current_status_dmg of status_dmg_array) {
             total_status_dmg = total_status_dmg + current_status_dmg;
