@@ -233,7 +233,7 @@ function update_all() {
     update_as_computed(tier5_data);
     var tier5_value = tier5_data["total_value"];
     var final_value = parseInt(tier5_value);
-    document.getElementById("display.tier5").textContent = display_generic_tier(tier5_data);
+    document.getElementById("display.tier5").textContent = display_generic_final_tier(tier5_data);
 
     damage_ratios["ratio_previous"] = tier5_data["ratio_previous"];
     damage_ratios = ratio_entries(damage_ratios);

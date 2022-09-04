@@ -230,6 +230,17 @@ function display_generic_tier(tier_data) {
     return `base=${base_value} * total_modifiers=${total_modifiers} = ${total_value}`;
 }
 
+function display_generic_final_tier(tier_data) {
+    var base1_value = tier_data["previous_base_value"];
+    var status_modifier = tier_data["status_dmg_modifier"];
+    var true_dmg = tier_data["true_dmg"];
+    var base_value = tier_data["base_value"];
+    var total_modifiers = tier_data["total_modifiers"];
+    var total_value = tier_data["total_value"];
+
+    return `((damage=${base1_value} * status_modifier=${status_modifier}) + true_dmg=${true_dmg})=${base_value} * total_modifiers=${total_modifiers} = ${total_value}`;
+}
+
 function standard_capture_attacker_data() {
     var attacker_data_box = document.getElementById("attacker_data_box");
     if(attacker_data_box == null) {
@@ -296,3 +307,4 @@ function standard_load_defender_data() {
 
     document.getElementById("defender_data_box").value = null;
 }
+

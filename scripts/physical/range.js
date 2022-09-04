@@ -38,7 +38,7 @@ function update_all() {
     update_as_computed(tier4_data);
     var tier4_value = tier4_data["total_value"];
     var final_value = parseInt(tier4_value);
-    document.getElementById("display.tier4").textContent = display_generic_tier(tier4_data);
+    document.getElementById("display.tier4").textContent = display_generic_final_tier(tier4_data);
 
     damage_ratios["ratio_previous"] = tier4_data["ratio_previous"];
     damage_ratios = ratio_entries(damage_ratios);

@@ -730,6 +730,11 @@ function build_status_dmg_data(attacker_data, defender_data) {
 
 function calc_standard_skill_tier4(previous_base_value_string, attacker_data, defender_data) {
     var previous_base_value = standard_float(previous_base_value_string);
+ 
+    var status_dmg_data = build_status_dmg_data(attacker_data, defender_data);
+    var status_dmg_type = status_dmg_data["status"];
+    var status_dmg_modifier = status_dmg_data["status_dmg"];
+    previous_base_value = standard_float(previous_base_value * status_dmg_modifier);
 
     var monocular_option = standard_float(attacker_data["refine_monocular"]);
     monocular_option = Math.min(monocular_option, 6);
@@ -754,12 +759,8 @@ function calc_standard_skill_tier4(previous_base_value_string, attacker_data, de
 
     var final_dmg_modifier = calc_final_damage(attacker_data, defender_data);
 
-    var status_dmg_data = build_status_dmg_data(attacker_data, defender_data);
-    var status_dmg_type = status_dmg_data["status"];
-    var status_dmg_modifier = status_dmg_data["status_dmg"];
-
     var base_value = standard_float(previous_base_value + true_dmg);
-    var total_modifiers = skill_dmg_modifier * final_dmg_modifier * status_dmg_modifier;
+    var total_modifiers = skill_dmg_modifier * final_dmg_modifier;
     total_modifiers = standard_float(total_modifiers);
     var total_value = standard_float(base_value * total_modifiers);
 
