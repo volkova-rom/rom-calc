@@ -1,0 +1,43 @@
+.main_content {
+    border-radius: 16px;
+    background-color: #94c4ec;
+    margin: auto;
+    padding: 16px;
+    width: 80%;
+}
+
+.image_icon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 50px;
+    width: 50px;
+}
+
+.skill_table {
+    background-color: #E6F2FF;
+    border: 1px solid #38719C;
+    border-collapse: "collapse";
+    width: 100%;
+}
+.column_name {
+    background-color: #D2EDFF;;
+    color: #00568a;
+    font-family: Verdana, sans-serif;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-align: center;
+    width: 20%;
+}
+.column_value_numeric {
+    background-color: #E6F2FF;
+    color: #00568a;
+    font-family: monospace, monospace;
+    font-size: 0.9em;
+}
+.column_value {
+    background-color: #E6F2FF;
+    color: #00568a;
+    font-family: Verdana, sans-serif;
+    font-size: 0.9em;
+}
