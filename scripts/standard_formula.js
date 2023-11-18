@@ -87,7 +87,7 @@ function calc_generic_modifier(incr_string, redu_string) {
 
     var generic_modifier = 1.00 + incr_modifier - redu_modifier;
 
-    return Math.max(standard_float(generic_modifier), 0.10);
+    return Math.max(standard_float(generic_modifier), 0.15);
 }
 
 function calc_pvp_element_modifier(element_atk_string, element_def_string) {
@@ -101,7 +101,7 @@ function calc_pvp_element_modifier(element_atk_string, element_def_string) {
 
     var element_temp_result = element_diff + 0.30 * (1.00 - Math.sin(element_diff * 3.14 / 2.00)) + 0.20;
     var element_modifier = standard_float(1.00 - element_temp_result);
-    return Math.max(element_modifier, 0.10);
+    return Math.max(element_modifier, 0.15);
 }
 
 function calc_pvp_race_modifier(race_incr_string, race_redu_string) {
@@ -115,12 +115,12 @@ function calc_pvp_race_modifier(race_incr_string, race_redu_string) {
 
     var race_tmp_result = race_diff + 0.40 * (1 - Math.sin(race_diff * 3.14 / 2.00));
     var race_modifier = standard_float(1.00 - race_tmp_result);
-    return Math.max(race_modifier, 0.20);
+    return Math.max(race_modifier, 0.15);
 }
 
 function calc_pve_race_modifier(race_incr_string, race_redu_string) {
     var race_modifier = generic_modifier(race_incr_string, race_redu_string);
-    return Math.max(race_modifier, 0.20);
+    return Math.max(race_modifier, 0.15);
 }
 
 function calc_pvp_def_modifier(patk_string, ignore_def_string, defender_def_per_string, defender_raw_def_string, defender_vit_string) {
@@ -210,7 +210,7 @@ function calc_pvp_physical_modifier(phys_pen_string, dam_redu_string,
         total_dam_redu_from_skills = standard_float(total_dam_redu_from_skills * current_dam_redu_skill);
     }
 
-    total_dam_redu_from_skills = Math.max(total_dam_redu_from_skills, 0.10);
+    total_dam_redu_from_skills = Math.max(total_dam_redu_from_skills, 0.15);
 
     var refine_pen = calc_pen_from_refine(weapon_refine_string) + 
         calc_pen_from_refine(acce1_refine_string) + 
@@ -225,9 +225,26 @@ function calc_pvp_physical_modifier(phys_pen_string, dam_redu_string,
     temp_dmg_redu = standard_float(temp_dmg_redu);
 
     var dmg_redu_result = temp_dmg_redu + 0.30 * (1.00 - Math.sin(temp_dmg_redu * 3.14 / 2.00)) + 0.20;
-    dmg_redu_result = Math.min(dmg_redu_result, 0.90);
+    dmg_redu_result = Math.min(dmg_redu_result, 0.85);
     return standard_float(1 - dmg_redu_result);
 }
+
+function calc_pvp_skill_damage_modifier(race_incr_string, race_redu_string) {
+    var race_incr = as_modifier(race_incr_string);
+    var race_redu = as_modifier(race_redu_string);
+
+    var race_diff = standard_float(race_redu - race_incr);
+    race_diff = Math.max(race_diff, -1.00);
+    race_diff = Math.min(race_diff, 1.00);
+    race_diff = standard_float(race_diff);
+
+    var race_tmp_result = race_diff + 0.40 * (1 - Math.sin(race_diff * 3.14 / 2.00));
+    var race_modifier = standard_float(1.00 - race_tmp_result);
+    return Math.max(race_modifier, 0.15);
+}
+
+
+
 
 function calc_standard_physical_tier1(attacker_data, defender_data) {
     var patk = attacker_data["patk"];
@@ -755,7 +772,7 @@ function calc_standard_skill_tier4(previous_base_value_string, attacker_data, de
     var refine_reduction = calc_defender_refine_reduction(defender_data);
     true_dmg = standard_float(true_dmg * refine_reduction);
 
-    var skill_dmg_modifier = calc_generic_modifier(attacker_data["skill_dmg_incr"], defender_data["skill_dmg_redu"]);
+    var skill_dmg_modifier = calc_pvp_skill_damage_modifier(attacker_data["skill_dmg_incr"], defender_data["skill_dmg_redu"]);
 
     var final_dmg_modifier = calc_final_damage(attacker_data, defender_data);
 
